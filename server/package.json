@@ -4,8 +4,10 @@
   "private": true,
   "main": "server.js",
   "dependencies": {
+    "app-module-path": "^2.2.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "dumper": "^1.0.12",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",

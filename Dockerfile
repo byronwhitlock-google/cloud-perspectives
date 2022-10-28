@@ -23,8 +23,7 @@ WORKDIR /app
 COPY . .
 
 WORKDIR /app/browser
-RUN npm run build --prod
-RUN npm run-script build
+RUN npm run build --omit=dev
 
 WORKDIR /app/server
 EXPOSE 5000
