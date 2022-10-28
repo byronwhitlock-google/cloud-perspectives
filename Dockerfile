@@ -10,8 +10,8 @@ WORKDIR /app
 
 RUN npm install pm2 -g
 
-COPY browser/package.json /app/browser/
-COPY server/package.json /app/server/
+COPY browser/package*.json /app/browser/
+COPY server/package*.json /app/server/
 
 WORKDIR /app/browser
 RUN npm install
@@ -23,6 +23,7 @@ WORKDIR /app
 COPY . .
 
 WORKDIR /app/browser
+RUN npm run build --prod
 RUN npm run-script build
 
 WORKDIR /app/server
