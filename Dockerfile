@@ -1,22 +1,8 @@
-
-
-
-# You can build and run this with
-#  docker build -t automl-labeling-tool
-#  docker run -p 5000:5000 -t automl-labeling-tool
-# Go to port 5000 on localhost to see.
-from node:alpine
+from node:alpine as builder
 WORKDIR /app
-
-RUN npm install pm2 -g
-
 COPY browser/package*.json /app/browser/
-COPY server/package*.json /app/server/
 
 WORKDIR /app/browser
-RUN npm install
-
-WORKDIR /app/server
 RUN npm install
 
 WORKDIR /app
@@ -25,6 +11,19 @@ COPY . .
 WORKDIR /app/browser
 RUN npm run build --omit=dev
 
+
+### Multistage build
+FROM python:3.8-slim-buster
+
+WORKDIR /app
+COPY server/requirements*.txt /app/server/
+
+WORKDIR /app/server
+RUN pip3 install -r requirements.txt
+
+WORKDIR /app
+COPY . .
+
 WORKDIR /app/server
 EXPOSE 5000
-CMD ["pm2-runtime", "server.js"]
+CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
